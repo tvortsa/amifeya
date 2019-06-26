@@ -2,6 +2,40 @@ const { app, BrowserWindow } = require('electron');
 const locals = { /* ...*/ };
 const setupPug = require('electron-pug');
 
+//  - - - Amino - - -
+var Amino = require('amino.js'); // задействуем библиотеку Amino.js api
+
+(async function() {
+    const sid = await Amino.login('ivakho@gmail.com', 'prostota18');
+    // console.log(`SID: ${sid}`);
+    const yourCommunitys = await Amino.getJoinedComs();
+    const firstCommunity = yourCommunitys.coms[0];
+    const users = await Amino.getComUsers(firstCommunity.id);
+    const user = users.users[2];
+    const ext = user.extensions[0];
+    console.log(user);
+    console.log("Оля ext: " + ext);
+    yourCommunitys.coms.map(comminity => {
+        console.log(`${comminity.name} | ${comminity.link}| ${comminity.id}`);
+    });
+    console.log('== Raw response ==');
+    console.log(JSON.stringify(yourCommunitys, null, 2));
+})();
+
+// const sid = await Amino.login('ivakho@gmail.com', 'prostota18');
+// Помните, что эти функции являются асинхронными, поэтому вам нужно использовать их в асинхронном контексте
+// Кроме того, вы должны ловить исключения самостоятельно
+
+// const AminoAPI = new Amino.AminoAPI();
+// AminoAPI.proccessAction(Amino.login('ivakho@gmail.com', 'prostota18'), function(data) {
+//     // Here is the success handler
+//     console.log('AMINO LOGIN SUCCESSFULL !');
+// }, function(error) {
+//     // Here is the error handler
+//     console.log('AMINO LOGIN ERROR !');
+// });
+//  - - - Amino end - - -
+
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) { // eslint-disable-line global-require
     app.quit();
