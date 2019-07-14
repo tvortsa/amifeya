@@ -2,12 +2,14 @@ extends layout
 
 block content
   div.container
-    h1 Амино - клиент
-    //- .row
-    //-   .col.s12.m6
-    //-     .card.blue-grey.darken-1
-    //-       .card-content.white-texth1
-    //-         span.card-title Амино-клиент
-    //-         p Привет мир!
-    //-         .card-action
-    //-           a(href="#") кнопка
+  include views/navbar.pug
+  h1 Амино - клиент
+  include views/footer.pug
+  //- .row
+  //-   .col.s12.m6
+  //-     .card.blue-grey.darken-1
+  //-       .card-content.white-texth1
+  //-         span.card-title Амино-клиент
+  //-         p Привет мир!
+  //-         .card-action
+  //-           a(href="#") кнопка
