@@ -1,66 +1,113 @@
-const { app, BrowserWindow } = require('electron');
-const locals = { /* ...*/ };
-const setupPug = require('electron-pug');
+const { app, BrowserWindow } = require("electron");
+const locals = {
+    /* ...*/
+};
+const setupPug = require("electron-pug");
+const amino_login = "ivakho@gmail.com";
+const amino_pass = "prostota-18";
+
+// Mongo/mongoose DB init and connect
+const mongoose = require("mongoose");
+
+const AminoModel = require("./models/amino");
+const aminoModel = new AminoModel({
+    name: "Bill",
+    age: 41
+});
+
+// подключение
+mongoose.connect("mongodb://localhost:27017/aminojs_db", function(err) {
+    if (err) throw err;
+
+    console.log(" - Mongoose > Successfully connected !");
+});
 
 //  - - - Amino - - -
-var Amino = require('amino.js'); // задействуем библиотеку Amino.js api
+var Amino = require("amino.js"); // задействуем библиотеку Amino.js api
+let aminos;
 
-(async function() {
-    const sid = await Amino.login('ivakho@gmail.com', 'prostota18');
-    // console.log(`SID: ${sid}`);
-    const yourCommunitys = await Amino.getJoinedComs();
-    const firstCommunity = yourCommunitys.coms[0];
-    const users = await Amino.getComUsers(firstCommunity.id);
-    const user = users.users[2];
-    const ext = user.extensions[0];
-    console.log(user);
-    console.log("Оля ext: " + ext);
-    yourCommunitys.coms.map(comminity => {
-        console.log(`${comminity.name} | ${comminity.link}| ${comminity.id}`);
-    });
-    console.log('== Raw response ==');
-    console.log(JSON.stringify(yourCommunitys, null, 2));
-})();
+// (async function() {
+//     const sid = await Amino.login('ivakho@gmail.com', 'prostota18');
+//     // console.log(`SID: ${sid}`);
+//     const yourCommunitys = await Amino.getJoinedComs();
+//     _feyaSetAminos(yourCommunitys.coms);
+//     const firstCommunity = yourCommunitys.coms[0];
+//     const users = await Amino.getComUsers(firstCommunity.id);
+//     const user = users.users[2];
+//     const ext = user.extensions[0];
+//     //console.log(user);
+//     //console.log("Оля ext: " + ext);
+//     yourCommunitys.coms.map(comminity => {
+//         console.log(`${comminity.name} | ${comminity.link}| ${comminity.id}`);
+//     });
+//     //console.log('== Raw response ==');
+//     //console.log(JSON.stringify(yourCommunitys, null, 2));
+// })();
 
 // const sid = await Amino.login('ivakho@gmail.com', 'prostota18');
 // Помните, что эти функции являются асинхронными, поэтому вам нужно использовать их в асинхронном контексте
 // Кроме того, вы должны ловить исключения самостоятельно
 
-// const AminoAPI = new Amino.AminoAPI();
-// AminoAPI.proccessAction(Amino.login('ivakho@gmail.com', 'prostota18'), function(data) {
-//     // Here is the success handler
-//     console.log('AMINO LOGIN SUCCESSFULL !');
-// }, function(error) {
-//     // Here is the error handler
-//     console.log('AMINO LOGIN ERROR !');
-// });
-//  - - - Amino end - - -
+// Framework - вариант подключения (позволяет синхронный контекст)
+const AminoAPI = new Amino.AminoAPI();
+const env = require('./aminoEnv');
+// Логинимся
+AminoAPI.proccessAction(
+    //Amino.login("ivakho@gmail.com", "prostota18"),
+    Amino.login(env.email, env.password),
 
-// Handle creating/removing shortcuts on Windows when installing/uninstalling.
-if (require('electron-squirrel-startup')) { // eslint-disable-line global-require
+    function(data) {
+        // Here is the success handler
+        console.log("AMINO LOGIN SUCCESSFULL !");
+        // Извлекаем Амины
+        AminoAPI.proccessAction(
+            Amino.getJoinedComs(),
+            function(data) {
+                data.coms.map(comminity => {
+                    console.log(`${comminity.name} | ${comminity.link} | ${comminity.id}`);
+                });
+            },
+            function(error) {
+                // Here is the error handler
+                console.log("AMINOS FETCH ERROR !");
+                throw new Error(error);
+            }
+        );
+    },
+    function(error) {
+        // Here is the error handler
+        console.log("AMINO LOGIN ERROR !");
+    }
+);
+
+// - - - Amino end - - -
+
+//Обработка создания / удаления ярлыков в Windows при установке / удалении.
+if (require("electron-squirrel-startup")) {
+    // eslint-disable-line global-require
     app.quit();
 }
 
 // --- Pug init ---
-app.on('ready', async() => {
+app.on("ready", async() => {
     try {
-        let pug = await setupPug({ pretty: true }, locals)
-        pug.on('error', err => console.error('electron-pug error', err))
+        let pug = await setupPug({ pretty: true }, locals);
+        pug.on("error", err => console.error("electron-pug error", err));
     } catch (err) {
         // Could not initiate 'electron-pug'
     }
 });
 // -- end
 
-// Keep a global reference of the window object, if you don't, the window will
-// be closed automatically when the JavaScript object is garbage collected.
+// хранит глобальную ссылку на объект window, если вы этого не сделаете, окно будет
+// автоматически закрываться, когда объект JavaScript собирается мусором.
 let mainWindow;
 
 const createWindow = () => {
     // Create the browser window.
     mainWindow = new BrowserWindow({
         width: 800,
-        height: 600,
+        height: 600
     });
 
     // and load the index.html of the app.
@@ -70,7 +117,7 @@ const createWindow = () => {
     mainWindow.webContents.openDevTools();
 
     // Emitted when the window is closed.
-    mainWindow.on('closed', () => {
+    mainWindow.on("closed", () => {
         // Dereference the window object, usually you would store windows
         // in an array if your app supports multi windows, this is the time
         // when you should delete the corresponding element.
@@ -78,21 +125,21 @@ const createWindow = () => {
     });
 };
 
-// This method will be called when Electron has finished
-// initialization and is ready to create browser windows.
-// Some APIs can only be used after this event occurs.
-app.on('ready', createWindow);
+// Этот метод будет вызван, когда Электрон закончил
+// инициализацию и готов к созданию окон браузера.
+// Некоторые API можно использовать только после этого события.
+app.on("ready", createWindow);
 
 // Quit when all windows are closed.
-app.on('window-all-closed', () => {
+app.on("window-all-closed", () => {
     // On OS X it is common for applications and their menu bar
     // to stay active until the user quits explicitly with Cmd + Q
-    if (process.platform !== 'darwin') {
+    if (process.platform !== "darwin") {
         app.quit();
     }
 });
 
-app.on('activate', () => {
+app.on("activate", () => {
     // On OS X it's common to re-create a window in the app when the
     // dock icon is clicked and there are no other windows open.
     if (mainWindow === null) {
@@ -100,5 +147,53 @@ app.on('activate', () => {
     }
 });
 
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and import them here.
+// В этом файле вы можете включить остальную часть кода основного процесса вашего приложения
+// Вы также можете поместить их в отдельные файлы и импортировать их здесь.
+
+// feya code
+// get list of aminos
+
+// app.on('ready', async() => {
+//     try {
+//         const sid = await Amino.login(amino_login, amino_pass);
+//         // console.log(`SID: ${sid}`);
+//         const yourCommunitys = await Amino.getJoinedComs();
+//         //const firstCommunity = yourCommunitys.coms[0];
+//         var my_aminos = [];
+//         //const coms = yourCommunitys.coms;
+//         for (const my_amino in yourCommunitys.coms) {
+//             my_aminos.push(my_amino);
+//         }
+//         console.log(" execute function - feyaGetAminos() -> /n in aminos exist: " + aminos.length + "aminos");
+//         my_aminos;
+//     } catch (err) {
+//         // Could not connect to Amino servers
+//         console.log("не могу соединиться с амино сервером!");
+//         console.log(err);
+
+//     }
+// });
+
+//не вызывать! вызывается из async
+function _feyaSetAminos(myaminos) {
+    aminos = myaminos;
+    console.log("тест функции _feyaSetAminos(): ");
+    console.log(aminos[1]);
+}
+
+// функции моего использования АПИ амино
+function feyaGetAminos() {
+    AminoAPI.proccessAction(
+        Amino.getJoinedComs(),
+        function(data) {
+            // Here is the success handler
+            console.log("AMINO GET JOINED AMINOS SUCCESSFULL !");
+        },
+        function(error) {
+            // Here is the error handler
+            console.log("AMINO GET JOINED AMINOS ERROR !");
+        }
+    );
+}
+
+//feyaGetAminos();
