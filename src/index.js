@@ -173,27 +173,3 @@ app.on("activate", () => {
 
 //     }
 // });
-
-//не вызывать! вызывается из async
-function _feyaSetAminos(myaminos) {
-    aminos = myaminos;
-    console.log("тест функции _feyaSetAminos(): ");
-    console.log(aminos[1]);
-}
-
-// функции моего использования АПИ амино
-function feyaGetAminos() {
-    AminoAPI.proccessAction(
-        Amino.getJoinedComs(),
-        function(data) {
-            // Here is the success handler
-            console.log("AMINO GET JOINED AMINOS SUCCESSFULL !");
-        },
-        function(error) {
-            // Here is the error handler
-            console.log("AMINO GET JOINED AMINOS ERROR !");
-        }
-    );
-}
-
-//feyaGetAminos();
