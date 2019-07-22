@@ -1,5 +1,5 @@
 footer.page-footer
-  .container
+  x-box
     //- .row
     //-   .col.l6.s12
     //-     h5.white-text приложение создано в амино Sacuraso397
@@ -16,7 +16,11 @@ footer.page-footer
     //-         a.grey-text.text-lighten-3(href='https://aminoapps.com/c/Sakuraso397/home/') Наш сайт
     //-       li
     //-         a.grey-text.text-lighten-3(href='#!') Link 4
-  .footer-copyright
-    .container
-      | © 2019 amino Sacuraso397 / feya River
-      a.grey-text.text-lighten-4.right(href='#!') More Links
+    //- .footer-copyright
+    //-   .container
+    //-     | © 2019 amino Sacuraso397 / feya River
+    //-     a.grey-text.text-lighten-4.right(href='#!') More Links
+    x-card.center  
+      x-icon(name='copyright')
+      x-label
+        | © 2019 amino Sacuraso397 / feya River
