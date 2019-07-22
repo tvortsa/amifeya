@@ -3,7 +3,10 @@ extends layout
 block content
   div.container
   include views/navbar.pug
-  h1 Амино - клиент
+  x-box
+    x-icon(name='mail')
+    x-card
+      h1 Амино - клиент
   include views/aminos.pug
   include views/footer.pug
   //- .row
