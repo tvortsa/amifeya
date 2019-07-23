@@ -19,8 +19,9 @@ html(lang='en')
     //-  include nav.pug
     block content
     //-  include demo/footer.pug
-    script(src="./javascripts/materialize.min.js")
+    script
+      include ./javascripts/materialize.min.js
     //- сама функция инициализации вызываемая после загрузки страницы
     //- в эту функцию нужно помещать весь код который работает только после загрузки страницы
-    <script> function initFunction() { M.AutoInit();} </script> 
+    script(type='text/javascript').function initFunction = function() { M.AutoInit();} 
     

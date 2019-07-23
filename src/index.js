@@ -2,6 +2,11 @@ const { app, BrowserWindow } = require("electron");
 const locals = {
     /* ...*/
 };
+
+// require('./src/main_process/amino_users.js')
+
+const glob = require('glob');
+const path = require('path');
 const setupPug = require("electron-pug");
 const amino_login = "ivakho@gmail.com";
 const amino_pass = "prostota-18";
@@ -14,6 +19,15 @@ const aminoModel = new AminoModel({
     name: "Bill",
     age: 41
 });
+
+//Require каждый JS файл в папке main - process
+
+function loadDemos() {
+    const files = glob.sync(path.join(__dirname, 'src/main_process/**/*.js'))
+    files.forEach((file) => { require(file) })
+}
+
+loadDemos()
 
 // подключение
 mongoose.connect("mongodb://localhost:27017/aminojs_db", function(err) {
