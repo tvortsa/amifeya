@@ -218,10 +218,14 @@ x-select
 x-button#get_users
   x-label users
   dialog#dialog_users_list
-    - var users_list = [user1,user2,user3]
-    ul
+    - var users_list = ['user1','user2','user3','user4','user5','user6','user7','user8','user9']
+    ul.collection.with-header
+      li.collection-header список пользователей
       each val in users_list
-        li= val 
+        li.collection-item.avatar
+          img.circle(src="images/yuna.jpg")
+          span.title
+          p= val 
 style.
     dialog {
     width: 300px;
