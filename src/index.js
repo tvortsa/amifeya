@@ -22,12 +22,12 @@ const aminoModel = new AminoModel({
 
 //Require каждый JS файл в папке main - process
 
-function loadDemos() {
+function loadMains() {
     const files = glob.sync(path.join(__dirname, 'src/main_process/**/*.js'))
     files.forEach((file) => { require(file) })
 }
 
-loadDemos()
+loadMains()
 
 // подключение
 mongoose.connect("mongodb://localhost:27017/aminojs_db", function(err) {
@@ -66,34 +66,36 @@ let aminos;
 const AminoAPI = new Amino.AminoAPI();
 const env = require('./aminoEnv');
 // Логинимся
-AminoAPI.proccessAction(
-    //Amino.login("ivakho@gmail.com", "prostota18"),
-    Amino.login(env.email, env.password),
+function getAmino(params) {
 
-    function(data) {
-        // Here is the success handler
-        console.log("AMINO LOGIN SUCCESSFULL !");
-        // Извлекаем Амины
-        AminoAPI.proccessAction(
-            Amino.getJoinedComs(),
-            function(data) {
-                data.coms.map(comminity => {
-                    console.log(`${comminity.name} | ${comminity.link} | ${comminity.id}`);
-                });
-            },
-            function(error) {
-                // Here is the error handler
-                console.log("AMINOS FETCH ERROR !");
-                throw new Error(error);
-            }
-        );
-    },
-    function(error) {
-        // Here is the error handler
-        console.log("AMINO LOGIN ERROR !");
-    }
-);
+    AminoAPI.proccessAction(
+        //Amino.login("ivakho@gmail.com", "prostota18"),
+        Amino.login(env.email, env.password),
 
+        function(data) {
+            // Here is the success handler
+            console.log("AMINO LOGIN SUCCESSFULL !");
+            // Извлекаем Амины
+            AminoAPI.proccessAction(
+                Amino.getJoinedComs(),
+                function(data) {
+                    data.coms.map(comminity => {
+                        console.log(`${comminity.name} | ${comminity.link} | ${comminity.id}`);
+                    });
+                },
+                function(error) {
+                    // Here is the error handler
+                    console.log("AMINOS FETCH ERROR !");
+                    throw new Error(error);
+                }
+            );
+        },
+        function(error) {
+            // Here is the error handler
+            console.log("AMINO LOGIN ERROR !");
+        }
+    );
+}
 // - - - Amino end - - -
 
 //Обработка создания / удаления ярлыков в Windows при установке / удалении.
@@ -121,7 +123,13 @@ const createWindow = () => {
     // Create the browser window.
     mainWindow = new BrowserWindow({
         width: 800,
-        height: 600
+        height: 600,
+
+        // решает проблему с require на стороне клиента
+        webPreferences: {
+            nodeIntegration: true
+        }
+
     });
 
     // and load the index.html of the app.

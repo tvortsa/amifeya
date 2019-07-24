@@ -7,86 +7,6 @@ x-select
       x-label Afrikaans
     x-menuitem(value='sq')
       x-label Albanian
-    x-menuitem(value='ar')
-      x-label Arabic
-    x-menuitem(value='hy')
-      x-label Armenian
-    x-menuitem(value='az')
-      x-label Azeri
-    x-menuitem(value='eu')
-      x-label Basque
-    x-menuitem(value='be')
-      x-label Belarusian
-    x-menuitem(value='bg')
-      x-label Bulgarian
-    x-menuitem(value='ca')
-      x-label Catalan
-    x-menuitem(value='zh')
-      x-label Chinese
-    x-menuitem(value='hr')
-      x-label Croatian
-    x-menuitem(value='cs')
-      x-label Czech
-    x-menuitem(value='da')
-      x-label Danish
-    x-menuitem(value='nl')
-      x-label Dutch
-    x-menuitem(value='en')
-      x-label English
-    x-menuitem(value='et')
-      x-label Estonian
-    x-menuitem(value='fa')
-      x-label Farsi
-    x-menuitem(value='fi')
-      x-label Finnish
-    x-menuitem(value='fr')
-      x-label French
-    x-menuitem(value='gl')
-      x-label Galician
-    x-menuitem(value='de')
-      x-label German
-    x-menuitem(value='ka')
-      x-label Georgian
-    x-menuitem(value='el')
-      x-label Greek
-    x-menuitem(value='he')
-      x-label Hebrew
-    x-menuitem(value='hi')
-      x-label Hindi
-    x-menuitem(value='hu')
-      x-label Hungarian
-    x-menuitem(value='is')
-      x-label Icelandic
-    x-menuitem(value='id')
-      x-label Indonesian
-    x-menuitem(value='it')
-      x-label Italian
-    x-menuitem(value='ja')
-      x-label Japanese
-    x-menuitem(value='kk')
-      x-label Kazakh
-    x-menuitem(value='ko')
-      x-label Korean
-    x-menuitem(value='lv')
-      x-label Latvian
-    x-menuitem(value='lt')
-      x-label Lithuanian
-    x-menuitem(value='mt')
-      x-label Maltese
-    x-menuitem(value='mn')
-      x-label Mongolian
-    x-menuitem(value='nb')
-      x-label Norwegian
-    x-menuitem(value='pl')
-      x-label Polish
-    x-menuitem(value='pt')
-      x-label Portuguese
-    x-menuitem(value='ro')
-      x-label Romanian
-    x-menuitem(value='ru')
-      x-label Russian
-    x-menuitem(value='sk')
-      x-label Slovak
     x-menuitem(value='sl')
       x-label Slovenian
     x-menuitem(value='es')
@@ -177,44 +97,6 @@ x-select
       x-label Korean
     x-menuitem(value='lv')
       x-label Latvian
-    x-menuitem(value='lt')
-      x-label Lithuanian
-    x-menuitem(value='mt')
-      x-label Maltese
-    x-menuitem(value='mn')
-      x-label Mongolian
-    x-menuitem(value='nb')
-      x-label Norwegian
-    x-menuitem(value='pl')
-      x-label Polish
-    x-menuitem(value='pt')
-      x-label Portuguese
-    x-menuitem(value='ro')
-      x-label Romanian
-    x-menuitem(value='ru')
-      x-label Russian
-    x-menuitem(value='sk')
-      x-label Slovak
-    x-menuitem(value='sl')
-      x-label Slovenian
-    x-menuitem(value='es')
-      x-label Spanish
-    x-menuitem(value='sv')
-      x-label Swedish
-    x-menuitem(value='th')
-      x-label Thai
-    x-menuitem(value='tr')
-      x-label Turkish
-    x-menuitem(value='uk')
-      x-label Ukrainian
-    x-menuitem(value='ur')
-      x-label Urdu
-    x-menuitem(value='uz')
-      x-label Uzbek
-    x-menuitem(value='vi')
-      x-label Vietnamese
-    x-menuitem(value='cy')
-      x-label Welsh
 x-button#get_users
   x-label users
   dialog#dialog_users_list
@@ -240,7 +122,7 @@ x-button#get_users
           each val in users_list
             tr(style={display:'table',width:'100%'})
               td
-                img.circle.responsive-img(src="images/yuna.jpg")
+                img.circle.responsive-img(src="images/yuna.jpg" style={width:'25%'})
               td= val
               td= val
 style.
@@ -253,5 +135,5 @@ style.
     border: 1px solid #326960;
     padding: 10px 20px;
     }  
--//  const someFunction = require('./render_process/amino_users.js')
-   
+script(type='module') 
+  include ../render_process/amino_users.js
