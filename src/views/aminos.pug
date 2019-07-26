@@ -97,11 +97,16 @@ x-select
       x-label Korean
     x-menuitem(value='lv')
       x-label Latvian
+//- - var users_list = ['user1','user2','user3','user4','user5']
+- // this.users_list = users_list
 x-button#get_users
-  x-label users
-  dialog#dialog_users_list
+  x-label get users
+  dialog#dialog_users_list     
       //- div.container
-      - var users_list = ['user1','user2','user3','user4','user5','user6','user7','user8','user9']
+      //- script 
+      //-   var users_list = ['user1','user2','user3','user4','user5','user6','user7','user8','user9']
+      //-   const dialog_users_list = document.getElementById('dialog_users_list')
+      //-   dialog_users_list.users_list = users_list
       //- *** list variant ***
       //- ul.collection.with-header
       //-   li.collection-header список пользователей
@@ -111,7 +116,7 @@ x-button#get_users
       //-       span.title
       //-       p= val 
       //- *** table variant ***
-      table.highlight
+      table#my_tab.highlight
         thead(style={display:'block',width:'100%'})
           tr(style={display:'table',width:'100%'})
             th.center-align ава
@@ -119,12 +124,13 @@ x-button#get_users
             th.center-align имя
         //- tbody(style={display:'block', height:'50px', overflow:'auto'})
         tbody(style={display:'block', height:'90vh', width:'100%', overflow:'auto'})
-          each val in users_list
-            tr(style={display:'table',width:'100%'})
-              td
-                img.circle.responsive-img(src="images/yuna.jpg" style={width:'25%'})
-              td= val
-              td= val
+          - var users_list = function (){get_users_list()}
+              each val in users_list
+                tr(style={display:'table',width:'100%'})
+                  td
+                    img.circle.responsive-img(src="images/yuna.jpg" style={width:'25%'})
+                  td= val
+                  td= val
 style.
     dialog::backdrop {
     height: 90vh;
@@ -135,5 +141,11 @@ style.
     border: 1px solid #326960;
     padding: 10px 20px;
     }  
-script(type='module') 
+script 
   include ../render_process/amino_users.js
+script!= "(function() {users_list = window.users_list})();"
+//- script
+//-   var users_list = ['user1','user2','user3','user4','user5','user6','user7','user8','user9']
+//-   const dialog_users_list = document.getElementById('dialog_users_list')
+//-   dialog_users_list.users_list = users_list
+//-   console.log(dialog_users_list)

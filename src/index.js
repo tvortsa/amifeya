@@ -1,6 +1,7 @@
 const { app, BrowserWindow } = require("electron");
 const locals = {
     /* ...*/
+    users_list: [1111, 2222, 3333, 4444, 5555, 6666]
 };
 
 // require('./src/main_process/amino_users.js')
@@ -195,3 +196,9 @@ app.on("activate", () => {
 
 //     }
 // });
+
+const { ipcMain } = require("electron");
+ipcMain.on("amino_users_get", (event, arg) => {
+    console.log('   -> amino_users_get ');
+    event.sender.send("amino-users-list-make", "pong");
+});
