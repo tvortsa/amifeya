@@ -1,6 +1,7 @@
 const { app, BrowserWindow } = require("electron");
 const locals = {
     /* ...*/
+    test_value: "test",
     users_list: [1111, 2222, 3333, 4444, 5555, 6666]
 };
 
@@ -8,7 +9,6 @@ const locals = {
 
 const glob = require('glob');
 const path = require('path');
-const setupPug = require("electron-pug");
 const amino_login = "ivakho@gmail.com";
 const amino_pass = "prostota-18";
 
@@ -105,17 +105,6 @@ if (require("electron-squirrel-startup")) {
     app.quit();
 }
 
-// --- Pug init ---
-app.on("ready", async() => {
-    try {
-        let pug = await setupPug({ pretty: true }, locals);
-        pug.on("error", err => console.error("electron-pug error", err));
-    } catch (err) {
-        // Could not initiate 'electron-pug'
-    }
-});
-// -- end
-
 // хранит глобальную ссылку на объект window, если вы этого не сделаете, окно будет
 // автоматически закрываться, когда объект JavaScript собирается мусором.
 let mainWindow;
@@ -134,7 +123,7 @@ const createWindow = () => {
     });
 
     // and load the index.html of the app.
-    mainWindow.loadURL(`file://${__dirname}/index.pug`);
+    mainWindow.loadURL(`file://${__dirname}/index.html`);
 
     // Open the DevTools.
     mainWindow.webContents.openDevTools();
