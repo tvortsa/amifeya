@@ -9,8 +9,7 @@ const locals = {
 const glob = require('glob');
 const path = require('path');
 const setupPug = require("electron-pug");
-const amino_login = "ivakho@gmail.com";
-const amino_pass = "prostota-18";
+
 
 // Mongo/mongoose DB init and connect
 const mongoose = require("mongoose");
@@ -30,7 +29,7 @@ function loadMains() {
 
 loadMains()
 
-// подключение
+// подключение к mongo
 mongoose.connect("mongodb://localhost:27017/aminojs_db", function(err) {
     if (err) throw err;
 
